@@ -34,7 +34,7 @@ const path = useLocation().pathname ;
 
             {/* Link to the signIn Page */}
             <Link to="/sign-in" > 
-              <Button gradientDuoTone="purpleToBlue" pill>
+              <Button gradientDuoTone="purpleToBlue" outline>
                 Sign In
               </Button>
             </Link>
