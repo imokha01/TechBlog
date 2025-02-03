@@ -3,11 +3,13 @@ import colors from "colors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js";
 
 // Initialize Express app and set port for the server.
 const app = express();
 const port = 3000;
 
+app.use(express.json());
 
 // Created the server
 app.listen(port, () => {
@@ -29,4 +31,5 @@ mongoose
 
   //use the user route in the app
   app.use("/api/user", userRoutes);
+  app.use("/api/auth", authRoutes);
 
