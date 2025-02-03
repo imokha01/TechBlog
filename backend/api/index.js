@@ -2,6 +2,7 @@ import express from "express";
 import colors from "colors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRoutes from "./routes/user.route.js";
 
 // Initialize Express app and set port for the server.
 const app = express();
@@ -25,3 +26,7 @@ mongoose
   .catch((error) => {
     console.log(`Error: ${error.message}`.red.underline.bold);
   });
+
+  //use the user route in the app
+  app.use("/api/user", userRoutes);
+

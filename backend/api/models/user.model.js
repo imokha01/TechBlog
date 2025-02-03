@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 //! Configure the user schema (user login conditions)
 const userSchema = new mongoose.Schema({
   username: {
