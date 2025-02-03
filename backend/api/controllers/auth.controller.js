@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
 import colors from "colors";
 import bcryptjs from "bcryptjs";
+import { errorHandler } from "../utils/error.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) =>{
   // Validate the request body data
   const { username, email, password } = req.body;
 
@@ -14,7 +15,7 @@ export const signup = async (req, res) => {
     email === "" ||
     password === ""
   ) {
-    return res.status(400).json({ error: "All fields are required" });
+    next(errorHandler(400, "All fields are required"));
   }
 
   //encrypt the password before saving to the database
@@ -34,6 +35,6 @@ export const signup = async (req, res) => {
     console.log("User created successfully".green.bold);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Email or username already exists" });
+    next(error); //the next error is the error from the middleware
   }
 };
