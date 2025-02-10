@@ -9,9 +9,10 @@ import authRoutes from "./routes/auth.route.js";
 const app = express();
 const port = 3000;
 
+// Middleware to use JSON as input of the backend
 app.use(express.json());
 
-// Created the server
+//! Created the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`.rainbow.bold);
 });
@@ -19,7 +20,8 @@ app.listen(port, () => {
 // Load environment variables from.env file
 dotenv.config();
 
-// Connect to MongoDB
+
+//! Connect to MongoDB
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
@@ -30,10 +32,10 @@ mongoose
   });
 
   //use the user route in the app
-  app.use("/api/user", userRoutes);
+  app.use("/api/user", userRoutes); 
   app.use("/api/auth", authRoutes);
 
-  // Middleware to handle errors
+  //TODO Middleware to handle errors
   app.use((error, req, res, next) => {
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";

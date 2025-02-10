@@ -1,7 +1,56 @@
-import { Link } from "react-router-dom"
-import { Label, TextInput, Button } from "flowbite-react"
+import { Link, useNavigate } from "react-router-dom"
+import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react"
+import { useState } from "react";
+
 
 const SignUp = () => {
+ 
+  // create an initial state for the input data
+  const [formData, setFormData] = useState({});
+
+  const handleChange = (e) => {
+      // Update the formData using the id property.
+        setFormData({...formData,  [e.target.id]: e.target.value.trim()});
+  };
+// create a state for error messages
+  const [errorMessage, setErrorMessage] = useState(null);
+
+// create a loading state for the form submission
+  const [loading, setLoading] = useState(false);
+
+// create a navigation state for the form submission
+  const navigate = useNavigate();
+
+  //! Create the function to handle the form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(!formData.username ||!formData.email ||!formData.password){
+      return setErrorMessage('Please fill out all fields.')
+    }
+    // TODO: Send the form data to the server using axios or fetch API
+    try {
+      setLoading(true); // start loading state
+      setErrorMessage(null); // clear any previous error message
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if(data.success === false) {
+        return setErrorMessage(data.message);
+      }
+      setLoading(false); // stop loading state
+      if(res.ok){
+        navigate("/sign-in"); // redirect to the sign-in page
+      }
+    } catch(error) {
+      setErrorMessage(error.message);
+      setLoading(false); // stop loading state
+    }
+  };
   return (
     <div className="min-h-screen mt-20 ">
       <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
@@ -18,36 +67,49 @@ const SignUp = () => {
 
         {/*****  RIGHT SIDE *****/}
         <div className="flex-1">
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
               <div>
                 <Label value="Your username" />
                 <TextInput
                   type="text"
                   placeholder="Username"
-                  id= "username" />
+                  id= "username" 
+                  onChange={handleChange}/>
               </div>
               <div>
                 <Label value="Your email" />
                 <TextInput
-                  type="text"
+                  type="email"
                   placeholder="name@company.com"
-                  id= "email" />
+                  id= "email" 
+                  onChange={handleChange}/>
               </div>
               <div>
                 <Label value="Your password" />
                 <TextInput
-                  type="text"
+                  type="password"
                   placeholder="Password"
-                  id= "password" />
+                  id= "password" 
+                  onChange={handleChange}/>
               </div>
-              <Button gradientDuoTone="purpleToBlue" type="submit" >
-                Sign Up
+              <Button gradientDuoTone="purpleToBlue" type="submit" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Spinner size='sm'  />
+                    <span className="pl-3">Loading...</span>
+                  </>
+                ) : "Sign Up"}
               </Button>
             </form>
             <div className="flex gap-2 text-sm mt-5">
               <span>Already have an account?</span>
               <Link to="/sign-in" className="text-sm text-blue-500"> Sign In</Link>
             </div>
+            {errorMessage && (
+              <Alert className="mt-5" type="error" color="failure">
+                {errorMessage}
+              </Alert>
+            )}
         </div>
       </div>
       
