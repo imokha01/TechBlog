@@ -16,16 +16,10 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
-  // // create a state for error messages
-  // const [errorMessage, setErrorMessage] = useState(null);
-
-  // // create a loading state for the form submission
-  // const [loading, setLoading] = useState(false);
-
-  // Get the user state from the Redux store
+  //! Get the user state from the Redux store
   const { loading, error: errorMessage } = useSelector((state) => state.user);
 
-  // create a dispatch state for the Redux store
+  //!  create a dispatch state for the Redux store
   const dispatch = useDispatch();
 
   // create a navigation state for the form submission
@@ -37,11 +31,9 @@ const SignIn = () => {
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("Please fill out all fields."));
     }
+
     // TODO: Send the form data to the server using axios or fetch API
     try {
-      // //? 1. start loading state
-      //  setLoading(true);
-      // setErrorMessage(null); 
 
       dispatch(signInStart()); //? 2. start loading state
 
@@ -62,9 +54,6 @@ const SignIn = () => {
         navigate("/"); // redirect to the Home page
       }
     } catch (error) {
-      // setErrorMessage(error.message);
-      // setLoading(false); // stop loading state
-
       dispatch(signInFailure(error.message)); 
     }
   };
