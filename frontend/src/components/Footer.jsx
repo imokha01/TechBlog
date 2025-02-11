@@ -52,9 +52,9 @@ const FooterCom = () => {
           </div>
         </div>
         <Footer.Divider className="my-0  lg:my-0" />
-        <div className="w-full  py-4 px-4 sm:flex sm:items-center sm:justify-between sm:py-4">
+        <div className="w-full py-4 px-4  sm:flex sm:items-center sm:justify-between sm:py-5">
           <Footer.Copyright href="#" by="Ahmed Wahab™" year={new Date().getFullYear()} />
-          <div className=" mt-2 flex space-x-6 sm:mt-0 sm:justify-center">
+          <div className=" mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
             <Footer.Icon href="#" icon={BsFacebook} />
             <Footer.Icon href="#" icon={BsInstagram} />
             <Footer.Icon href="#" icon={BsTwitter} />
