@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { useState } from "react";
+import { HiMail } from "react-icons/hi";
 
 const SignUp = () => {
   // create an initial state for the input data
@@ -77,6 +78,7 @@ const SignUp = () => {
                 type="text"
                 placeholder="Username"
                 id="username"
+                 addon="@"
                 onChange={handleChange}
               />
             </div>
@@ -86,6 +88,7 @@ const SignUp = () => {
                 type="email"
                 placeholder="name@company.com"
                 id="email"
+                icon={HiMail}
                 onChange={handleChange}
               />
             </div>
@@ -93,7 +96,7 @@ const SignUp = () => {
               <Label value="Your password" />
               <TextInput
                 type="password"
-                placeholder="Password"
+                placeholder="***********"
                 id="password"
                 onChange={handleChange}
               />
