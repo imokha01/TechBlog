@@ -2,6 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { HiMail } from "react-icons/hi";
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 const SignIn = () => {
   // create an initial state for the input data
@@ -12,11 +16,17 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
-  // create a state for error messages
-  const [errorMessage, setErrorMessage] = useState(null);
+  // // create a state for error messages
+  // const [errorMessage, setErrorMessage] = useState(null);
 
-  // create a loading state for the form submission
-  const [loading, setLoading] = useState(false);
+  // // create a loading state for the form submission
+  // const [loading, setLoading] = useState(false);
+
+  // Get the user state from the Redux store
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+
+  // create a dispatch state for the Redux store
+  const dispatch = useDispatch();
 
   // create a navigation state for the form submission
   const navigate = useNavigate();
@@ -25,12 +35,15 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return dispatch(signInFailure("Please fill out all fields."));
     }
     // TODO: Send the form data to the server using axios or fetch API
     try {
-      setLoading(true); // start loading state
-      setErrorMessage(null); // clear any previous error message
+      // //? 1. start loading state
+      //  setLoading(true);
+      // setErrorMessage(null); 
+
+      dispatch(signInStart()); //? 2. start loading state
 
       const res = await fetch("/api/auth/signin", {
         method: "POST",
@@ -41,15 +54,18 @@ const SignIn = () => {
       });
       const data = await res.json();
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(signInFailure(data.message)); 
       }
-      setLoading(false); // stop loading state
+      // setLoading(false); // stop loading state
       if (res.ok) {
+        dispatch(signInSuccess(data)); 
         navigate("/"); // redirect to the Home page
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false); // stop loading state
+      // setErrorMessage(error.message);
+      // setLoading(false); // stop loading state
+
+      dispatch(signInFailure(error.message)); 
     }
   };
   return (
