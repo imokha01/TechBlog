@@ -4,6 +4,7 @@ import { useState } from "react";
 import { HiMail } from "react-icons/hi";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../components/OAuth.jsx";
 
 
 
@@ -111,6 +112,9 @@ const SignIn = () => {
                 "Sign In"
               )}
             </Button>
+            
+            {/** TODO: Add a Google Sign-In Button */}
+            <OAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
