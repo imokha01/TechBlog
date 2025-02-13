@@ -4,13 +4,20 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
+import cors from "cors";
+
 
 // Initialize Express app and set port for the server.
 const app = express();
-const port = 3000;
+const port = 4040;
+
+// Enable CORS
+app.use(cors());
 
 // Middleware to use JSON as input of the backend
 app.use(express.json());
+
+
 
 //! Created the server
 app.listen(port, () => {
