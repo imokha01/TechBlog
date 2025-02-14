@@ -6,11 +6,11 @@ import jwt from "jsonwebtoken";
 
 //TODO Signup Controller
 export const signup = async (req, res, next) => {
-  //! Validate the request body data
+  //! 1. Extract the username, email, password from the request
   const { username, email, password } = req.body;
 
   try {
-    // ! Check if all fields are provided
+    //! 2. Check if all fields are not provided and return error
     if (
       !username ||
       !email ||
@@ -22,10 +22,10 @@ export const signup = async (req, res, next) => {
       next(errorHandler(400, "All fields are required"));
     }
 
-    //encrypt the password before saving to the database
+    //! 3. Encrypt the password using bcrypt before saving to the database
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
-    //! Create a new user with the given username, email and password
+    //! 4. Create a new user with the given username, email and password
     const newUser = new User({
       username,
       email,
@@ -38,47 +38,52 @@ export const signup = async (req, res, next) => {
     //!send success response
     res.json({ message: "signup successful" });
     console.log("User created successfully".green.bold);
-  } catch (error) {
+
     //! Handle errors
+  } catch (error) {
     next(error);
   }
 };
 
 //TODO Signin Controller
 export const signin = async (req, res, next) => {
+
+  //! 1. Extract User email and Password from request
   const { email, password } = req.body;
 
-  //! Check if all fields are provided
+  //! 2. Check if all fields are provided
   if (!email || !password || email === "" || password === "") {
     return next(errorHandler(400, "All fields are required"));
   }
 
   try {
-    //! Validate the User email
+    //! 3. Validate the User by their email
     const validUser = await User.findOne({ email });
     if (!validUser) {
       return next(errorHandler(404, "Wrong email address or password"));
     }
 
-    //! Validate the User password
+    //! 4. Validate the User password by comparing the password giving with the hashed password in the database
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) {
       return next(errorHandler(401, "Wrong email address or password"));
     }
 
-    //! Authenticate the user using JWT(JSON Web Token)
+    //! 5. Authenticate the user using JWT(JSON Web Token)
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
-    //! Remove the password from the user data
+    //! 6. Remove the password from the user data
     const { password: pass, ...rest } = validUser._doc;
 
-    //! Send the response with the token
+    //! 7. Send the response with the token
     res
       .status(200)
       .cookie("access_token", token, {
         httpOnly: true
       })
       .json(rest);
+      
+      //! 8. Handle errors
   } catch (error) {
     next(error);
   }
@@ -90,29 +95,32 @@ export const google = async (req, res, next) => {
   const { email, name, googlePhotoURL } = req.body;
 
   try {
-    //! Check if the user exists in the database?
+    //! Check if the user with the email exists in the database?
     const user = await User.findOne({ email });
 
+    //! if user exists, follow the Login flow
     if (user) {
-      // Authenticate the user using JWT(JSON Web Token)
+      //1. Authenticate the user using JWT(JSON Web Token)
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-      // Remove the google password from the user data
+      //2. Remove the google password from the user data
       const { password: pass, ...rest } = user._doc;
 
-      // Send the response with the token
+      //3. Send the user data (excluding the password) back as response.
       res
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true
         })
         .json(rest);
+
+    //! If User does not exist, follow the Registration Flow     
     } else {
-      //! Create a password for the user
+      // 1. generate a new password for the user and hash the password using bcryptjs
       const generatedPassword = Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
 
-      // Create a new user with the given username, email, password
+      //2. Create a new user with the given username, email, password
       const newUser = new User({
         username:
           name.toLowerCase().split(" ").join("") +
@@ -122,23 +130,25 @@ export const google = async (req, res, next) => {
         profilePicture: googlePhotoURL
       });
 
-      // Save the new user to the database
+      //3. Save the new user to the database
       await newUser.save();
 
-      // Authenticate the user using JWT(JSON Web Token)
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      //4. Authenticate the user using JWT(JSON Web Token)
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
 
-      // Remove the password from the user data
+      //5. Remove the password from the user data
       const { password: pass, ...rest } = newUser._doc;
 
-      // Send the response with the token
+      //6. Send the new user data (excluding the password) as response
       res
         .status(200)
-        .cookie("access_token", token, {
+        .cookie("access_to ken", token, {
           httpOnly: true
         })
         .json(rest);
     }
+
+    //! Handle the error 
   } catch (error) {
     next(error);
   }

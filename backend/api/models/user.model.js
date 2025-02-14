@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-//! Configure the user schema (user login conditions)
+//! 1. Configure the user schema (user login conditions)
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
 }, {timestamps: true} // timestamp is used to track the time of creation and update of the user.
 ); 
 
-//! Create the User model
+//! 2.  Create the User model
 const User = mongoose.model("User", userSchema);
 
 export default User;
