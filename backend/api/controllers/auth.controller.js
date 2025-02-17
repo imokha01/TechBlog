@@ -47,7 +47,6 @@ export const signup = async (req, res, next) => {
 
 //TODO Signin Controller
 export const signin = async (req, res, next) => {
-
   //! 1. Extract User email and Password from request
   const { email, password } = req.body;
 
@@ -59,6 +58,7 @@ export const signin = async (req, res, next) => {
   try {
     //! 3. Validate the User by their email
     const validUser = await User.findOne({ email });
+    console.log(validUser);
     if (!validUser) {
       return next(errorHandler(404, "Wrong email address or password"));
     }
@@ -82,8 +82,8 @@ export const signin = async (req, res, next) => {
         httpOnly: true
       })
       .json(rest);
-      
-      //! 8. Handle errors
+
+    //! 8. Handle errors
   } catch (error) {
     next(error);
   }
@@ -114,7 +114,7 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
 
-    //! If User does not exist, follow the Registration Flow     
+      //! If User does not exist, follow the Registration Flow
     } else {
       // 1. generate a new password for the user and hash the password using bcryptjs
       const generatedPassword = Math.random().toString(36).slice(-8);
@@ -148,7 +148,7 @@ export const google = async (req, res, next) => {
         .json(rest);
     }
 
-    //! Handle the error 
+    //! Handle the error
   } catch (error) {
     next(error);
   }

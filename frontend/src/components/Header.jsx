@@ -1,15 +1,23 @@
 import { Navbar, TextInput, Button, NavbarCollapse, NavbarLink, NavbarToggle, Dropdown, Avatar } from "flowbite-react"
 import { Link, useLocation } from "react-router-dom"
 import {AiOutlineSearch} from "react-icons/ai"
-import { FaMoon } from "react-icons/fa"
+import { FaMoon, FaSun } from "react-icons/fa"
 import {useSelector} from 'react-redux'
+import { useDispatch } from "react-redux"
+import { toggleTheme } from "../redux/theme/themeSlice"
 
 
 const Header = () => {
 const path = useLocation().pathname ;
 // TODO: Get the Logged In User Details from React Redux State Store.
 const {currentUser} = useSelector(state => state.user)
-console.log(currentUser)
+
+// TODO: Create a dispatch state for the Redux store
+ const dispatch = useDispatch();
+
+ //TODO: Import the theme from the Redux store
+ const theme = useSelector(state => state.theme)
+
 
   return (
     <div>
@@ -33,8 +41,8 @@ console.log(currentUser)
             <AiOutlineSearch />
           </Button>
           <div className="flex gap-2 md:order-2">
-            <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
-              <FaMoon/>
+            <Button className="w-12 h-10 hidden sm:inline" color="gray" pill onClick={() => dispatch(toggleTheme())}>
+              {theme.theme === 'light' ? <FaSun /> : <FaMoon />}
             </Button>
 
        {/* TODO: Check if the User is a Current User and display it profile picture as a dropdown */}
@@ -59,7 +67,7 @@ console.log(currentUser)
                   </Link>
                   <Dropdown.Divider />
                   <Dropdown.Item> 
-                    Sign Out
+                    Sign Out 
                   </Dropdown.Item>
               </Dropdown>
             ) : (
@@ -84,7 +92,6 @@ console.log(currentUser)
               <Link to="/projects">Projects</Link>
             </NavbarLink>
           </NavbarCollapse>
-
 
       </Navbar>
     </div>
