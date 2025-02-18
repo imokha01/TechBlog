@@ -92,7 +92,6 @@ const {currentUser} = useSelector(state => state.user)
               <Link to="/projects">Projects</Link>
             </NavbarLink>
           </NavbarCollapse>
-
       </Navbar>
     </div>
   )
