@@ -7,11 +7,9 @@ import DashProfile from "../components/DashProfile"
 const Dashboard = () => {
   //! Use useLocation hook to access location object, which contains the current URL information.
   const location = useLocation()
-  console.log(location)
 
   //! Use useEffect hook to manage the state of the 'tab' value extracted from the URL
     const [tab, setTab] = useState('')
-
 
 
   //TODO create a new Dashboard instance with the specified location and tab location.
@@ -22,7 +20,6 @@ const Dashboard = () => {
 
     // Set the 'tab' state with the extracted value.  
     const tabFromUrl = urlParams.get('tab')
-    console.log(tabFromUrl)
 
     // Update the state with the extracted tab value
     if (tabFromUrl) {

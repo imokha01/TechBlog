@@ -79,7 +79,7 @@ const SignUp = () => {
                 type="text"
                 placeholder="Username"
                 id="username"
-                 addon="@"
+                addon="@"
                 onChange={handleChange}
               />
             </div>

@@ -5,11 +5,12 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 
 // Initialize Express app and set port for the server.
 const app = express();
-const port = 4040;
+const port = 3000;
 
 // Enable CORS
 app.use(cors());
@@ -17,6 +18,8 @@ app.use(cors());
 // Middleware to use JSON as input of the backend
 app.use(express.json());
 
+// Middleware to use cookies
+app.use(cookieParser());
 
 
 //! Created the server
