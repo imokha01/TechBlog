@@ -7,8 +7,9 @@ const DashProfile = () => {
   const { currentUser } = useSelector(state => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [formData,  setFormData] = useState({});
 
-  //! Create a file picker reference
+  //TODO: Create a file picker reference  
   const filePickerRef = useRef();
 
   const handleImageChange = e => {
@@ -28,12 +29,12 @@ const DashProfile = () => {
 
   const uploadImage = async () => {
     const formData = new FormData();
-    formData.append("image", imageFile);  // append the image file to the form data
+    formData.append("image", imageFile);  //FIXME: Append the image file of the form data
   };
 
   return (
-    <div className="max-w-lg mx-auto p-3 w-full ">
-      <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
+    <div className="w-full max-w-lg p-3 mx-auto ">
+      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
       <form className="flex flex-col gap-4">
         <input
           type="file"
@@ -44,7 +45,7 @@ const DashProfile = () => {
           hidden
         />
         <div
-          className="w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
+          className="self-center w-32 h-32 overflow-hidden rounded-full shadow-md cursor-pointer"
           onClick={() => filePickerRef.current.click()}
         >
           <img
@@ -72,7 +73,7 @@ const DashProfile = () => {
           Update
         </Button>
       </form>
-      <div className="text-red-500 flex justify-between mt-5">
+      <div className="flex justify-between mt-5 text-red-500">
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>

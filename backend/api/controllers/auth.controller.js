@@ -4,13 +4,13 @@ import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
-//TODO Signup Controller
+//IDEA: SIGNUP CONTROLLER
 export const signup = async (req, res, next) => {
-  //! 1. Extract the username, email, password from the request
+  //* 1. Extract the username, email, password from the request
   const { username, email, password } = req.body;
 
   try {
-    //! 2. Check if all fields are not provided and return error
+  //* 2. Check if all fields are not provided and return error
     if (
       !username ||
       !email ||
@@ -22,10 +22,10 @@ export const signup = async (req, res, next) => {
       next(errorHandler(400, "All fields are required"));
     }
 
-    //! 3. Encrypt the password using bcrypt before saving to the database
+    //* 3. Encrypt the password using bcrypt before saving to the database
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
-    //! 4. Create a new user with the given username, email and password
+    //* 4. Create a new user with the given username, email and password
     const newUser = new User({
       username,
       email,
@@ -45,7 +45,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-//TODO Signin Controller
+//IDEA: SIGNIN CONTROLLER
 export const signin = async (req, res, next) => {
   //! 1. Extract User email and Password from request
   const { email, password } = req.body;
@@ -89,7 +89,7 @@ export const signin = async (req, res, next) => {
   }
 };
 
-//TODO GOOGLE Controller
+//IDEA: GOOGLE CONTROLLER
 export const google = async (req, res, next) => {
   //! Get the User email address, name and google photo URL from the server request.
   const { email, name, googlePhotoURL } = req.body;
