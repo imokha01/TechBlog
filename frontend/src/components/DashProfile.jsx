@@ -9,7 +9,7 @@ const DashProfile = () => {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [formData,  setFormData] = useState({});
 
-  //TODO: Create a file picker reference  
+  //TODO: Create a file picker reference
   const filePickerRef = useRef();
 
   const handleImageChange = e => {
